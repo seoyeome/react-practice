@@ -78,24 +78,42 @@
       company: 'Hyorim Industry Corp'
     };
 
+    const { useState, useContext, createContext } = React;
+
+    const DarkModeContext = createContext(null);
+
     function Header() {
+
+      const context = useContext(DarkModeContext);
+      const { isDark } = context;
+
       return(
-        <h2 className="title">SeoYoung Blog</h2>
+        <h2 className="title"
+        style={{backgroundColor: isDark? 'black': 'white', color: isDark? 'white': 'black'}}>SeoYoung Blog</h2>
       )
       
     };
 
     function Menubar() {
+
+      const toggleHandler = () => 
+      setIsDark(!isDark);
+
+      const context = useContext(DarkModeContext);
+      const { isDark, setIsDark } = context;
+
       return(
-        <div>
+        <div style={{backgroundColor: isDark? 'black': 'white', color: isDark? 'white': 'black'}}>
           <span className="menubar">About</span>
           <span className="menubar">Portfolio</span>
           <span className="menubar">Study</span>
+          <button onClick={ toggleHandler }>{ isDark? 'Light Mode' : 'Dark Mode' }다크모드 전환</button>
         </div>
       )
     };
 
     function MenubarBox() {
+      
       return (
         <div className="box">
           <Menubar/>
@@ -104,8 +122,12 @@
     };
     
     function ProfileHeader(){
+
+      const context = useContext(DarkModeContext);
+      const { isDark } = context;
+
       return(
-        <div>
+        <div style={{backgroundColor: isDark? 'black': 'white', color: isDark? 'white': 'black'}}>
           <h2>Profile</h2>
           <hr/>
         </div>
@@ -128,8 +150,12 @@
       )
     };
     function ProfileInfo() {
+
+      const context = useContext(DarkModeContext);
+      const { isDark } = context;
+
       return(
-        <div className="profileInfo">
+        <div className="profileInfo" style={{backgroundColor: isDark? 'black': 'white', color: isDark? 'white': 'black'}}>
           <span className="profileComponent">Name : {profileInfo.name}</span><br/>
           <span className="profileComponent">Education : {profileInfo.education}</span>
         </div>
@@ -137,8 +163,12 @@
     };
 
     function Experience() {
+
+      const context = useContext(DarkModeContext);
+      const { isDark } = context;
+
       return(
-        <div className="experience">
+        <div className="experience" style={{backgroundColor: isDark? 'black': 'white', color: isDark? 'white': 'black'}}>
           <h2>Experience</h2>
           <hr/>
           <ExperienceInfo/>
@@ -147,26 +177,36 @@
     };
 
     function ExperienceInfo() {
+
+      const context = useContext(DarkModeContext);
+      const { isDark } = context;
+
       return(
-        <div>
+        <div style={{backgroundColor: isDark? 'black': 'white', color: isDark? 'white': 'black'}}>
           <span>{experienceInfo.term}</span><br/>
           <strong>{experienceInfo.company}</strong>
         </div>
       )
     };
 
-    const renderingPage = (
-      <>
+    function RenderingPage()  {
+
+      const [isDark, setIsDark] = useState(false);
+
+      return(
+      <DarkModeContext.Provider value={{ isDark, setIsDark }}>
         <Header/>
         <MenubarBox/>
         <ProfileHeader/>
         <Profile/>
         <Experience/>
-      </>
-    );
+      </DarkModeContext.Provider>
+      )
+
+    };
 
     ReactDOM.render(
-      renderingPage,
+      <RenderingPage/>,
       document.getElementById('root')
     );
 
